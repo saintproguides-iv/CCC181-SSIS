@@ -1,0 +1,48 @@
+
+{% for row in items_on_page %}
+<style>
+.form-popup {
+ display: none;
+ position: fixed;
+ bottom: 0;
+ right: 15px;
+ border: 3px solid #f1f1f1;
+ z-index: 9;
+}
+
+</style>
+<tr>
+  <td>{{ row[0] }}</td>
+  <td>{{ row[1] }}</td>
+  <td>{{ row[2] }}</td>
+  <td>{{ row[3] }}</td>
+  <td>{{ row[4] }}</td>
+<td>
+
+<button class="open" data-form-id="{{ row[0] }}" >Open Form</button>
+<div class="form-popup" id="{{ row[0] }}" style="display: none;">
+   
+    <form action="/s_update" method="post" >
+
+     <input type="hidden" name="s_id"  value="{{ row[0] }}">
+           <input type="text" name="First_Name" value="{{ row[1] }}">
+           <input type="text" name="Last_Name" value="{{ row[2] }}">
+           <select name="Program_ID" placeholder="Program_ID">
+      {% for m in prog %}
+      <option value = {{ m[0] }}>{{ m[0] }}</option>
+      {% endfor %}
+           <input type="submit" value="Update">
+
+    </form>
+    <form action="/s_delete" method="post">
+      <input type="hidden" name="s_id" value="{{ row[0] }}">
+      <input type="submit" value="Delete">
+      
+    </form>
+</div>
+<button type="button" class="close" data-form-id="{{ row[0] }}">Close</button>
+
+</td>
+
+</tr>
+{% endfor %}

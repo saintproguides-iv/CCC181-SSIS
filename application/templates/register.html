@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Account</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #555;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border 0.2s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #4a90e2;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            margin-top: 5px;
+        }
+        
+        .btn:hover {
+            background: #3a7bc8;
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .form-footer a {
+            color: #4a90e2;
+            text-decoration: none;
+        }
+        
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+  <div>{{ msg }}</div>
+    <div class="container">
+        <div class="form-container">
+            <div class="header">
+                <h1>Create Account</h1>
+                <p>Fill in the details below to register</p>
+            </div>
+            
+            <form id="myForm" action="/register" onsubmit="return validateForm()" method="post">
+                <div class="form-group">
+                    <label for="User_id">User ID</label>
+                    <input type="text" class="form-control" id="User_id" name="user_id" placeholder="Enter your ID">
+                </div>
+                
+                <div class="form-group">
+                    <label for="Username">Username</label>
+                    <input type="text" class="form-control" id="Username" name="Username" placeholder="Choose a username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="user_password" placeholder="Create a password">
+                </div>
+                
+                <button type="submit" class="btn">Register</button>
+            </form>
+            
+            <div class="form-footer">
+                Already have an account? <a href='login'>Login</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function validateForm() {
+            let x = document.forms["myForm"]["Username"].value;
+            let y = document.forms["myForm"]["user_password"].value;
+            let z = document.forms["myForm"]["user_id"].value;
+            
+            if (!z) {
+                alert("User ID must be filled out");
+                document.getElementById("User_id").focus();
+                return false;
+            }
+            
+            if (!x) {
+                alert("Username must be filled out");
+                document.getElementById("Username").focus();
+                return false;
+            }
+            
+            if (!y) {
+                alert("Password must be filled out");
+                document.getElementById("password").focus();
+                return false;
+            }
+            
+            return true;
+        }
+    </script>
+</body>
+</html>

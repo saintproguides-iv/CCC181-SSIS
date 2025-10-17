@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}
+Colleges
+{% endblock %}
+{% block content %}
+<div>
+  <div>{{ msg2 }}</div>
+  <h2>Add College</h2>
+    <form action="/c_create" method="post">
+      <input type="text" name="college_id" placeholder="ID">
+      <input type="text" name="college_name" placeholder="College Name">
+      
+      <input type="submit" value="Create">
+      
+    </form>
+
+
+</div>
+
+<div  class="mt-3">
+<table id="collegeTable" class="table table-striped">
+<thead>
+<tr>
+  <th>College ID</th>
+  <th>College Name</th>
+  <th>Actions</th>
+</tr>
+</thead>
+ <tbody>
+    {% include "collegerows.html" %}
+  </tbody>
+</table>
+</div>
+
+<script>
+ $(document).ready(function() {
+    $('#collegeTable').DataTable({
+      "pageLength": 10,
+      "ordering": true,
+      "searching": true,
+      "info": true,
+      "lengthChange": true
+    });
+    $(document).on("click", ".open",function(){
+    var formId = $(this).data('form-id');
+    $("#" + formId).show();
+  });
+  
+
+  $(document).on("click", ".close", function(){
+    var formId = $(this).data('form-id');
+    $("#" + formId).hide();
+  });
+});
+
+
+  
+
+
+
+
+</script>
+
+
+{% endblock %}
