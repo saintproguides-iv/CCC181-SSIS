@@ -12,6 +12,17 @@
 
 </style>
 <tr>
+  {%if row[5] == 'No Image'%}
+  
+   <td><img src='../../static/imgs/rt.jpg' width= '70px' height= '50px' ></img></td>
+
+  {%else%}
+
+   <td><img src={{row[5]}} width= '70px' height= '50px' class= "imgs" ></img></td>
+
+     {%endif%}
+
+  
   <td>{{ row[0] }}</td>
   <td>{{ row[1] }}</td>
   <td>{{ row[2] }}</td>
@@ -22,14 +33,15 @@
 <button class="open" data-form-id="{{ row[0] }}" >Open Form</button>
 <div class="form-popup" id="{{ row[0] }}" style="display: none;">
    
-    <form action="/s_update" method="post" >
+    <form action="/s_update" method="post" enctype="multipart/form-data" >
 
      <input type="hidden" name="s_id"  value="{{ row[0] }}">
+     <input type="file" id="profilePictureUpload" name="profilePictureUpload" accept="image/*"  >
            <input type="text" name="First_Name" value="{{ row[1] }}">
            <input type="text" name="Last_Name" value="{{ row[2] }}">
            <select name="Program_ID" placeholder="Program_ID">
       {% for m in prog %}
-      <option value = {{ m[0] }}>{{ m[0] }}</option>
+      <option value = {{m[0]}}>{{m[0]}}</option>
       {% endfor %}
            <input type="submit" value="Update">
 

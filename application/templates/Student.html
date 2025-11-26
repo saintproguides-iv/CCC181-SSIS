@@ -6,7 +6,8 @@ Students
 <div>
   <div>{{ msg2 }}</div>
   <h2>Add Student</h2>
-    <form action="/s_create" method="post">
+    <form action="/s_create" method="post" enctype="multipart/form-data">
+      Input Image: <input type="file" id="profilePictureUpload" name="profilePictureUpload" accept="image/*"  ></input>
       <input type="text" name="s_id" placeholder="ID">
       <input type="text" name="First_Name" placeholder="First Name">
       <input type="text" name="Last_Name" placeholder="Last Name">
@@ -26,6 +27,7 @@ Students
 <table id="studentsTable" class="table table-striped">
 <thead>
 <tr>
+  <th>Picture</th>
   <th>ID</th>
   <th>First Name</th>
   <th>Last Name</th>

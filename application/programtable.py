@@ -1,13 +1,21 @@
 from flask import Flask,Blueprint, flash, g, redirect, url_for, render_template, request, session, jsonify
 import psycopg2, psycopg2.extras
+from dotenv import load_dotenv
+import os
 program_bp = Blueprint('program_bp', __name__, template_folder="templates")
-
+def get_db_connection():
+    conn = psycopg2.connect(
+        dbname=os.getenv("DB_NAME"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        host=os.getenv("DB_HOST"),
+        port=os.getenv("DB_PORT")
+)
+    
+    return conn
 @program_bp.route('/Programs')
 def Home():
- conn = psycopg2.connect(database="flask_db",
-                           user="postgres",
-                           password="saint",
-                           host="localhost", port="5432")
+ conn = get_db_connection()
  cur = conn.cursor()
 
                
@@ -41,10 +49,7 @@ def create():
     conn = None
     cur = None
     try:
-        conn = psycopg2.connect(database="flask_db",
-                                user="postgres",
-                                password="saint",
-                                host="localhost", port="5432")
+        conn = get_db_connection()
 
         cur = conn.cursor()
         msg2 = ''
@@ -71,16 +76,16 @@ def create():
         return redirect(url_for('program_bp.Home', msg2=msg2)) 
     
     except Exception as e:
-        print(f"GENERAL ERROR: {e}")  # CATCH OTHER ERRORS
+        print(f"GENERAL ERROR: {e}")  
         if conn:
             conn.rollback()
         msg2 = f'Error! {e}'
         return redirect(url_for('program_bp.Home', msg2=msg2))
     
     finally:
-        if cur:  # CHECK IF cur EXISTS BEFORE CLOSING
+        if cur:  
             cur.close()
-        if conn:  # CHECK IF conn EXISTS BEFORE CLOSING
+        if conn: 
             conn.close()
 
     
@@ -88,10 +93,7 @@ def create():
 
 @program_bp.route('/p_update', methods=['POST'])
 def update():
-    conn = psycopg2.connect(database="flask_db",
-                            user="postgres",
-                            password="saint",
-                            host="localhost", port="5432")
+    conn = get_db_connection()
 
     cur = conn.cursor()
     program_id = request.form['program_id']
@@ -113,7 +115,7 @@ def update():
 
 @program_bp.route('/p_delete', methods=['POST'])
 def delete():
-    conn = psycopg2.connect (database="flask_db", user="postgres", password="saint", host="localhost", port="5432")
+    conn = get_db_connection()
     cur = conn.cursor()
 
 

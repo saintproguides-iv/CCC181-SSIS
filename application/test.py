@@ -3,6 +3,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from werkzeug.security import check_password_hash, generate_password_hash
 import psycopg2, psycopg2.extras
 import psycopg2
+import os
 from studenttable import student_bp
 from programtable import program_bp
 from collegetable import college_bp
@@ -13,7 +14,7 @@ app.register_blueprint(student_bp, url_prefix="")
 app.register_blueprint(program_bp, url_prefix="")
 app.register_blueprint(college_bp, url_prefix="")
 app.config["SESSION_PERMANENT"] = False 
-app.secret_key = 'gsegwsegasefqwe344qwe'
+app.secret_key = os.getenv("SECRET_KEY")
 
     
 
@@ -41,7 +42,6 @@ def register():
         actual_pass = generate_password_hash(user_password, method='pbkdf2:sha256')
         
         try:
-            # Check if user_id already exists
             cur.execute("SELECT user_id FROM users WHERE user_id = %s", (user_id,))
             existing_user = cur.fetchone()
             
