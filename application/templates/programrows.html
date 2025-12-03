@@ -10,36 +10,49 @@
 }
 
 </style>
-<tr>
-  <td>{{ row[0] }}</td>
-  <td>{{ row[1] }}</td>
-  <td>{{ row[2] }}</td>
-<td>
 
-<button class="open" data-form-id="{{ row[0] }}" >Open Form</button>
-<div class="form-popup" id="{{ row[0] }}" style="display: none;">
-   
-    <form action="/p_update" method="post" >
 
-          <input type="hidden" name="program_id"  value="{{ row[0] }}">
-           <input type="text" name="program_name" value="{{ row[1] }}">
-           <select name="college_in" placeholder="college_in">
-          {% for m in clg %}
-          <option value = {{ m[0] }}>{{ m[0] }}</option>
-          {% endfor %}
-           
-           <input type="submit" value="Update">
 
-    </form>
-    <form action="/p_delete" method="post">
-      <input type="hidden" name="program_id" value="{{ row[0] }}">
-      <input type="submit" value="Delete">
-      
-    </form>
-</div>
-<button type="button" class="close" data-form-id="{{ row[0] }}">Close</button>
 
-</td>
 
-</tr>
 {% endfor %}
+<script>
+  $(document).ready(function() {
+    $('#programTable').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": "/programs_data",
+        "columns": [
+        {"data" : 0},
+        {"data" : 1},
+        {"data" : 2},
+        {"data":null,
+          "orderable": false,
+          "searchable": false,
+          "render":function(data, type, row){
+            return `<button class="open" data-form-id="${row[0]}" >Open Form</button>
+           <div class="form-popup" id="${row[0]}" style="display: none;">
+   
+           <form action="/p_update" method="post" >
+
+           <input type="hidden" name="program_id"  value="${row[0]}">
+           <input type="text" name="program_name" value="${row[1]}">
+           <select name="college_in" placeholder="college_in">
+           {% for m in clg %}
+           <option value = {{ m[0] }}>{{ m[0] }}</option>
+           {% endfor %}
+           
+           <input type="submit" value="Update" onclick="return confirm('Are you sure you want to update this program?')">
+
+           </form>
+            <form action="/p_delete" method="post">
+           <input type="hidden" name="program_id" value="${row[0]}">
+            <input type="submit" value="Delete" value="Update" onclick="return confirm('Are you sure you want to delete this program?')">
+      
+           </form>
+           </div>
+            <button type="button" class="close" data-form-id="${row[0]}">Close</button>`
+          }
+        }]
+      })});
+</script>

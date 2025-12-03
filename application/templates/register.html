@@ -115,14 +115,14 @@
     </style>
 </head>
 <body>
-  <div>{{ msg }}</div>
+  
     <div class="container">
         <div class="form-container">
             <div class="header">
                 <h1>Create Account</h1>
                 <p>Fill in the details below to register</p>
             </div>
-            
+              <div>{{ msg }}</div>
             <form id="myForm" action="/register" onsubmit="return validateForm()" method="post">
                 <div class="form-group">
                     <label for="User_id">User ID</label>
