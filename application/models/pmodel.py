@@ -23,7 +23,7 @@ def programs_base():
     clg = cur.fetchall()
     cur.close()
     conn.close()
-    return render_template("Programs.html", clg=clg, msg2=msg2)
+    return clg, msg2
 def get_programs(start, length, search_value, order_column, order_dir):
     conn = get_db_connection()
     
@@ -74,7 +74,7 @@ def pcreate(program_id, program_name, college_in):
     conn.commit()
     print("Insert successful!")
         
-    return redirect(url_for('program_bp.Home', msg2=msg2)) 
+    return msg2
 def pupdate(program_id, program_name, college_in):
     conn = get_db_connection()
     
@@ -99,4 +99,4 @@ def pdelete(program_id):
    
     cur.close()
     conn.close()
-    return redirect(url_for('program_bp.Home'))
+    

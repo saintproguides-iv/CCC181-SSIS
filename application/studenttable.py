@@ -28,7 +28,8 @@ def Home():
      if not session.get('loggedin'):
         return render_template("login.html")
      else:
-        return base_students()
+        prog , msg2 = base_students()
+        return render_template("Student.html", prog=prog, msg2=msg2)
        
 
 @student_bp.route('/students_data')
@@ -71,8 +72,8 @@ def create():
     Gender = request.form['Gender']
     Year_Level = request.form['Year Level']
     profpic_file = request.files.get("profilePictureUpload")
-    result = creates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_file)
-    return result
+    msg2 = creates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_file)
+    return redirect(url_for('student_bp.Home', msg2=msg2)) 
 
 
 @student_bp.route('/s_update', methods=['POST'])
@@ -84,10 +85,12 @@ def update():
     Gender = request.form['Gender']
     Year_Level = request.form['Year Level']
     profpic_file = request.files.get("profilePictureUpload")
-    return updates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_file)
+    updates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_file)
+    return redirect(url_for('student_bp.Home',))
 
 
 @student_bp.route('/s_delete', methods=['POST'])
 def delete():
     s_id = request.form['s_id']
-    return deletes(s_id)
+    deletes(s_id)
+    return redirect(url_for('student_bp.Home',))

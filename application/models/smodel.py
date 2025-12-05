@@ -25,7 +25,7 @@ def base_students():
      prog = cur.fetchall()
      cur.close()
      conn.close()
-     return render_template("Student.html", prog=prog, msg2=msg2)
+     return prog, msg2
  
 
 def get_students(start, length, search_value, order_column, order_dir):
@@ -126,11 +126,11 @@ def creates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_fil
 
     
 
-    return redirect(url_for('student_bp.Home', msg2=msg2)) 
+    return msg2
  except psycopg2.Error as e:
                conn.rollback()
                msg2 = 'Error!, Invalid Form Applied.'
-               return redirect(url_for('student_bp.Home', msg2=msg2)) 
+               return  msg2
  finally:
     cur.close()
     conn.close()
@@ -184,7 +184,7 @@ def updates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_fil
     conn.commit()
     cur.close()
     conn.close()
-    return redirect(url_for('student_bp.Home') )
+   
 def deletes(s_id):
     conn =  conn = get_db_connection()
     cur = conn.cursor()
@@ -200,4 +200,4 @@ def deletes(s_id):
    
     cur.close()
     conn.close()
-    return redirect(url_for('student_bp.Home'))
+   

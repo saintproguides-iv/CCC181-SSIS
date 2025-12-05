@@ -24,7 +24,7 @@ def get_colleges():
                cur.execute('''SELECT * FROM colleges''', 
                    )
                items_on_page = cur.fetchall()
-               return render_template("College.html", items_on_page=items_on_page,msg2=msg2 )
+               return  items_on_page,msg2
     except psycopg2.Error as e:
                conn.rollback()
                return f"Database error: {str(e)}", 400
@@ -48,21 +48,21 @@ def ccreate(college_id, college_name):
           conn.commit()
         print("Insert successful!")
         
-        return redirect(url_for('college_bp.Home', msg2=msg2)) 
+        return msg2
      
     except psycopg2.Error as e:
         print(f"DATABASE ERROR: {e}")  
         if conn:  
             conn.rollback()
         msg2 = f'Error! {e}'  
-        return redirect(url_for('college_bp.Home', msg2=msg2)) 
+        return msg2
     
     except Exception as e:
         print(f"GENERAL ERROR: {e}")  # CATCH OTHER ERRORS
         if conn:
             conn.rollback()
         msg2 = f'Error! {e}'
-        return redirect(url_for('college_bp.Home', msg2=msg2))
+        return  msg2
     
     finally:
         if cur:  # CHECK IF cur EXISTS BEFORE CLOSING
@@ -77,7 +77,7 @@ def cupdate(college_name, college_id):
     conn.commit()
     cur.close()
     conn.close()
-    return redirect(url_for('college_bp.Home')) 
+   
 
 def cdelete(college_id):
     conn = get_db_connection()
@@ -90,4 +90,4 @@ def cdelete(college_id):
    
     cur.close()
     conn.close()
-    return redirect(url_for('college_bp.Home')) 
+    

@@ -14,16 +14,15 @@ def get_db_connection():
     
     return conn
 @program_bp.route('/Programs')
-def Home():
- conn = get_db_connection()
- cur = conn.cursor()
-
-               
+def Home():              
  if not session.get('loggedin'):
         
-        return render_template("loginpath.login.html")
+       return render_template("login.html")
  else: 
-       return programs_base()
+       clg, msg2 = programs_base()
+       return render_template("Programs.html", clg = clg, msg2=msg2)
+   
+ 
   
  
   
@@ -67,7 +66,7 @@ def create():
         program_id = request.form['program_id']
         program_name = request.form['program_name']
         college_in = request.form['college_in']
-        return pcreate(program_id, program_name, college_in)
+        msg2 = pcreate(program_id, program_name, college_in)
         
      
     except psycopg2.Error as e:
@@ -89,6 +88,7 @@ def create():
             cur.close()
         if conn: 
             conn.close()
+    return redirect(url_for('program_bp.Home', msg2=msg2))
 
     
 
@@ -99,10 +99,12 @@ def update():
     program_id = request.form['program_id']
     program_name = request.form['program_name']
     college_in = request.form['college_in']
-    return pupdate(program_id, program_name, college_in)
+    msg2 = pupdate(program_id, program_name, college_in)
+    return redirect(url_for('program_bp.Home',  msg2=msg2))
 
 
 @program_bp.route('/p_delete', methods=['POST'])
 def delete():
     program_id = request.form['program_id']
-    return pdelete(program_id)
+    msg2 = pdelete(program_id)
+    return redirect(url_for('program_bp.Home', msg2=msg2))
