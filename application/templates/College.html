@@ -7,8 +7,8 @@ Colleges
   <div>{{ msg2 }}</div>
   <h2>Add College</h2>
     <form action="/c_create" method="post">
-      <input type="text" name="college_id" placeholder="ID">
-      <input type="text" name="college_name" placeholder="College Name">
+      <input type="text" name="college_id" placeholder="ID" required>
+      <input type="text" name="college_name" placeholder="College Name" required>
       
       <input type="submit" value="Create" onclick="return confirm('Are you sure you want to create this college?')">
       

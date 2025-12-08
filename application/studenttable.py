@@ -85,8 +85,8 @@ def update():
     Gender = request.form['Gender']
     Year_Level = request.form['Year Level']
     profpic_file = request.files.get("profilePictureUpload")
-    updates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_file)
-    return redirect(url_for('student_bp.Home',))
+    msg2 = updates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_file)
+    return redirect(url_for('student_bp.Home',msg2=msg2))
 
 
 @student_bp.route('/s_delete', methods=['POST'])

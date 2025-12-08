@@ -7,8 +7,8 @@ Programs
   <div>{{ msg2 }}</div>
   <h2>Add Program</h2>
     <form action="/p_create" method="post">
-      <input type="text" name="program_id" placeholder="ID">
-      <input type="text" name="program_name" placeholder="Program Name">
+      <input type="text" name="program_id" placeholder="ID" required>
+      <input type="text" name="program_name" placeholder="Program Name" required>
          <select name="college_in" placeholder="college_in">
           {% for m in clg %}
           <option value = {{ m[0] }}>{{ m[0] }}</option>

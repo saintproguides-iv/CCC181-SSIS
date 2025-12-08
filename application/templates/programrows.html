@@ -36,7 +36,7 @@
            <form action="/p_update" method="post" >
 
            <input type="hidden" name="program_id"  value="${row[0]}">
-           <input type="text" name="program_name" value="${row[1]}">
+           <input type="text" name="program_name" value="${row[1]}" required>
            <select name="college_in" placeholder="college_in">
            {% for m in clg %}
            <option value = {{ m[0] }}>{{ m[0] }}</option>

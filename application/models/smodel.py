@@ -95,10 +95,10 @@ def creates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_fil
             ext_without_dot = 'jpg'
         allowed_extensions = ['jpg', 'jpeg', 'png']
         if ext_without_dot not in allowed_extensions:
-            flash("Invalid file type. Only image files (JPG, JPEG, PNG) are allowed.")
+            msg2 = f'Invalid file type. Only image files (JPG, JPEG, PNG) are allowed. Giving default picture instead.'
             cur.close()
             conn.close()
-            return redirect(url_for('student_bp.Home')) 
+            return msg2
         
         content_type = f"image/{ext_without_dot}"
         unique_filename = f"cover_{Program_ID}_{filename}"
@@ -129,7 +129,7 @@ def creates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_fil
     return msg2
  except psycopg2.Error as e:
                conn.rollback()
-               msg2 = 'Error!, Invalid Form Applied.'
+               msg2 = f'ID is invalid, did not insert student'
                return  msg2
  finally:
     cur.close()
@@ -151,10 +151,11 @@ def updates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_fil
             ext_without_dot = 'jpg'
         allowed_extensions = ['jpg', 'jpeg', 'png']
         if ext_without_dot not in allowed_extensions:
-            flash("Invalid file type. Only image files (JPG, JPEG, PNG) are allowed.")
+            print("invalid")
+            msg2 = f'Invalid file type. Only image files (JPG, JPEG, PNG) are allowed.'
             cur.close()
             conn.close()
-            return redirect(url_for('student_bp.Home')) 
+            return msg2 
         
         content_type = f"image/{ext_without_dot}"
         unique_filename = f"cover_{Program_ID}_{filename}"

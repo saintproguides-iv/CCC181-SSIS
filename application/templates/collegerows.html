@@ -21,7 +21,7 @@
     <form action="/c_update" method="post" >
 
           <input type="hidden" name="college_id"  value="{{ row[0] }}">
-           <input type="text" name="college_name" value="{{ row[1] }}">
+           <input type="text" name="college_name" value="{{ row[1] }}" required>
         
            
            <input type="submit" value="Update" onclick="return confirm('Are you sure you want to update this college?')">
