@@ -70,17 +70,17 @@ def create():
         
      
     except psycopg2.Error as e:
-        print(f"DATABASE ERROR: {e}")  
+        print(f"ID is Invalid")  
         if conn:  
             conn.rollback()
-        msg2 = f'Error! {e}'  
+        msg2 = f"ID is Invalid" 
         return redirect(url_for('program_bp.Home', msg2=msg2)) 
     
     except Exception as e:
-        print(f"GENERAL ERROR: {e}")  
+        print(f"GENERAL ERROR: Something went wrong.")  
         if conn:
             conn.rollback()
-        msg2 = f'Error! {e}'
+        msg2 = f"GENERAL ERROR: Something went wrong."
         return redirect(url_for('program_bp.Home', msg2=msg2))
     
     finally:

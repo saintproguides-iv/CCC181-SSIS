@@ -14,8 +14,12 @@ def logout():
 
 @loginpath.route('/register', methods=['GET', 'POST'])
 def register():
-    msg = ''
-    if request.method == 'POST':
+ if session.get('loggedin'):
+        
+  return render_template("Home.html")
+ else:
+     msg = ''
+     if request.method == 'POST':
         user_id = request.form.get('user_id', '')
         username = request.form.get('username', '')
         user_password = request.form.get('user_password', '')
@@ -30,7 +34,7 @@ def register():
         
             return render_template("register.html", msg=msg)
 
-    return render_template("register.html", msg=msg)
+     return render_template("register.html", msg=msg)
 
 
 @loginpath.route("/Home")
@@ -43,6 +47,10 @@ def Homepage():
 @loginpath.route("/")
 @loginpath.route('/login', methods=['GET', 'POST'])
 def login():
+ if session.get('loggedin'):
+        
+  return render_template("Home.html")
+ else:
     msg = ''
     if request.method == 'POST' and 'user_id' in request.form and 'username' in request.form and 'password' in request.form:
         

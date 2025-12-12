@@ -27,7 +27,7 @@ def get_colleges():
                return  items_on_page,msg2
     except psycopg2.Error as e:
                conn.rollback()
-               return f"Database error: {str(e)}", 400
+               return f"ID is invalid", 400
     finally:
             cur.close()
             conn.close()
