@@ -31,18 +31,19 @@ $(document).ready(function() {
             "searchable": false,
               "render": function(data, type, row) {
                   if (data && data !== 'No Image') {
-                      return '<img src="' + data + '" width="70" height="50" />';
+                      return '<img src="' + data + '" width="70" height="50" style="border-radius:50%;" />';
                   } else {
-                      return '<img src="/static/imgs/rt.jpg" width="70" height="50" />';
+                      return '<img src="/static/imgs/rt.jpg" width="70" height="50" style="border-radius:50%;"/>';
                   }
               } },  
             { "data": 0 },  
               { 
             "data": null,
             "render": function(data, type, row) {
-              return row[1] + " " + row[2]; 
+              return row[1]; 
             }
             },  
+            {"data" : 2},
             { "data": 7, 
             "orderable": false,
             "searchable": false  },  
@@ -63,22 +64,22 @@ $(document).ready(function() {
                         <input class="files" type="file" name="profilePictureUpload" accept=".jpg,.jpeg,.png">
                         <input type="text" name="First_Name" value="${row[1]}" required>
                         <input type="text" name="Last_Name" value="${row[2]}" required>
-                        <select name="Program_ID">
+                        <select name="Program_ID" value="${row[3]}">
                           {% for m in prog %}
-                           <option value = {{ m[0] }}>{{ m[0] }}</option>
+                           <option value = {{ m[0] }} ${ row[3] == "{{ m[0] }}" ? "selected" : "" }>{{ m[0] }}</option>
                            {% endfor %}
            
                         </select>
                         <select name="Gender" placeholder="Gender">
-                         <option value = "Female">Female</option>
-                          <option value = "Male">Male</option>
+                         <option value = "Female" ${row[7] == "Female" ? "selected" : ""}>Female</option>
+                          <option value = "Male" ${row[7] == "Male" ? "selected" : ""}>Male</option>
                           </select>
                           <select name="Year Level" placeholder="Year Level">
-                          <option value = "1">1</option>
-                          <option value = "2">2</option>
-                         <option value = "3">3</option>
-                          <option value = "4">4</option>
-                          <option value = "5+">5+</option>
+                          <option value = "1" ${row[6] == "1"  ? "selected" : ""}>1</option>
+                          <option value = "2" ${row[6] == "2"  ? "selected" : ""}>2</option>
+                         <option value = "3" ${row[6] == "3"  ? "selected" : ""}>3</option>
+                          <option value = "4" ${row[6] == "4"  ? "selected" : ""}>4</option>
+                          <option value = "5+" ${row[6] == "5+"  ? "selected" : ""}>5+</option>
                          </select>
                         <input type="submit" value="Update" onclick="return confirm('Are you sure you want to update this user?')">
                       </form>

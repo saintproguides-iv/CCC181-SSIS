@@ -8,7 +8,7 @@ Students
   <h2>Add Student</h2>
     <form action="/s_create" method="post" enctype="multipart/form-data">
       Input Image: <input type="file" id="profilePictureUpload" name="profilePictureUpload" accept=".jpg, .jpeg, .png"  ></input>
-      <input type="text" name="s_id" placeholder="ID" required>
+      <input type="text" name="s_id" placeholder="ID: XXXX-XXXX" required>
       <input type="text" name="First_Name" placeholder="First Name" required>
       <input type="text" name="Last_Name" placeholder="Last Name" required>
       <select name="Program_ID" placeholder="Program_ID">
@@ -40,7 +40,8 @@ Students
 <tr>
   <th>Picture</th>
   <th>ID</th>
-  <th>Name</th>
+  <th>First Name</th>
+  <th>Last Name</th>
   <th>Gender</th>
   <th>Course ID</th>
   <th>Course Name</th>

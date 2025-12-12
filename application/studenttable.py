@@ -46,6 +46,7 @@ def students_data():
         "Students.student_image",
         "s_id",
         "First_Name",
+        "Last_Name",
         "Students.gender",
         "Students.Program_ID",
         "Programs.Program_Name",
