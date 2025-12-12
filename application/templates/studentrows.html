@@ -22,6 +22,7 @@
 <script>
 $(document).ready(function() {
     $('#studentsTable').DataTable({
+        dom: "<'row'<'col-sm-6'f><'col-sm-6'l>>" +"<'row'<'col-sm-12 dt-p-left'p>>" +"ti",
         "processing": true,
         "serverSide": true,
         "ajax": "/students_data",
@@ -31,9 +32,9 @@ $(document).ready(function() {
             "searchable": false,
               "render": function(data, type, row) {
                   if (data && data !== 'No Image') {
-                      return '<img src="' + data + '" width="90" height="80" style="border-radius:50%;" />';
+                      return '<img src="' + data + '" width="60" height="50" style="border-radius:50%;" />';
                   } else {
-                      return '<img src="/static/imgs/rt.jpg" width="90" height="80" style="border-radius:50%;"/>';
+                      return '<img src="/static/imgs/rt.jpg" width="60" height="50" style="border-radius:50%;"/>';
                   }
               } },  
             { "data": 0 },  

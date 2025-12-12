@@ -19,6 +19,8 @@
 <script>
   $(document).ready(function() {
     $('#programTable').DataTable({
+      
+        dom: "<'row'<'col-sm-6'f><'col-sm-6'l>>" +"<'row'<'col-sm-12 dt-p-left'p>>" +"ti",
         "processing": true,
         "serverSide": true,
         "ajax": "/programs_data",
