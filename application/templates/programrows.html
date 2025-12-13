@@ -41,7 +41,7 @@
            <input type="text" name="program_name" value="${row[1]}" required>
            <select name="college_in" placeholder="college_in">
            {% for m in clg %}
-           <option value = {{ m[0] }}>{{ m[0] }}</option>
+           <option value = {{ m[0] }} ${ row[2] == "{{m[0]}}" ? "selected" : "" }>{{ m[0] }}</option>
            {% endfor %}
            
            <input type="submit" value="Update" onclick="return confirm('Are you sure you want to update this program?')">

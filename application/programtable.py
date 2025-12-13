@@ -31,6 +31,7 @@ def Home():
      
 @program_bp.route('/programs_data')
 def programs_data():
+
     draw = request.args.get('draw', type=int, default=1)
     start = request.args.get('start', type=int, default=0)
     length = request.args.get('length', type=int, default=10)
@@ -99,8 +100,8 @@ def update():
     program_id = request.form['program_id']
     program_name = request.form['program_name']
     college_in = request.form['college_in']
-    msg2 = pupdate(program_id, program_name, college_in)
-    return redirect(url_for('program_bp.Home',  msg2=msg2))
+    pupdate(program_id, program_name, college_in)
+    return redirect(url_for('program_bp.Home'))
 
 
 @program_bp.route('/p_delete', methods=['POST'])
