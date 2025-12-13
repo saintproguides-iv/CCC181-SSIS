@@ -51,4 +51,5 @@ Thumbs.db
 .flaskenv
 .vscode
 application/__pycache__
-Pipfile
+package-lock.json
+package.json
