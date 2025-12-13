@@ -1,10 +1,17 @@
 from flask import Flask,Blueprint, flash, g, redirect, url_for, render_template, request, session, jsonify
-from flask_login import LoginManager
+
 from werkzeug.security import generate_password_hash, check_password_hash
 import psycopg2
 import os
 from app.models.loginmodel import registerquery, loginquery
 loginpath = Blueprint('loginpath', __name__, template_folder="../templates")
+@loginpath.route("/")
+def root():
+    session.clear()
+    if not session.get('loggedin'):
+        return redirect(url_for("loginpath.login"))
+    else:
+        return redirect(url_for("loginpath.Homepage"))
 @loginpath.route('/logout')
 def logout():
     session.pop('loggedin', None)
@@ -44,7 +51,7 @@ def Homepage():
     else:
      return render_template("Home.html")
  
-@loginpath.route("/")
+
 @loginpath.route('/login', methods=['GET', 'POST'])
 def login():
  if session.get('loggedin'):
