@@ -7,7 +7,7 @@ Students
   <div>{{ msg2 }}</div>
   <h2>Add Student</h2>
     <form action="/s_create" method="post" enctype="multipart/form-data">
-      Input Image: <input type="file" id="profilePictureUpload" name="profilePictureUpload" accept=".jpg, .jpeg, .png"  ></input>
+      Input Image(2mb): <input type="file" id="profilePictureUpload" name="profilePictureUpload" accept=".jpg, .jpeg, .png"  ></input>
       <input type="text" name="s_id" placeholder="ID: XXXX-XXXX" required>
       <input type="text" name="First_Name" placeholder="First Name" required>
       <input type="text" name="Last_Name" placeholder="Last Name" required>
@@ -61,14 +61,28 @@ Students
 var uploadField = document.getElementById("profilePictureUpload");
 
 uploadField.onchange = function() {
-    if(this.files[0].size > 2200000){
-       alert("File is too big!");
-       this.value = "";
-    };
+    var file = this.files[0];
+    if (!file) return; 
+
+    // Check file size (max 2.2 MB)
+    if (file.size > 2200000) {
+        alert("File is too big! Maximum size is 2.2 MB.");
+        this.value = "";
+        return;
+    }
+
+  
+    var allowedExtensions = ['jpg', 'jpeg', 'png'];
+    var fileExtension = file.name.split('.').pop().toLowerCase();
+
+    if (!allowedExtensions.includes(fileExtension)) {
+        alert("Invalid file type. Only JPG, JPEG, and PNG are allowed.");
+        this.value = "";
+        return;
+    }
 };
 
   
-
 
 
 

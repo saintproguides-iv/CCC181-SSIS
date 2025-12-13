@@ -108,10 +108,7 @@ $(document).on('click', '.close', function() {
     let id = $(this).data('form-id');
     $('#form-' + id).hide();
 });
-$(document).on("change", ".files", function() {
-        if (this.files[0].size > 2200000) {
-            alert("File is too big!");
-            this.value = "";
-        }
-    });
+
+
+    
 </script>
