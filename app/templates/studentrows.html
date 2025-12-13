@@ -20,6 +20,9 @@
 </tr>
 {% endfor %}
 <script>
+const DEFAULT_IMG_URL = "{{ url_for('static', filename='imgs/rt.jpg') }}"
+console.log(window.DEFAULT_IMG_URL);
+
 $(document).ready(function() {
     $('#studentsTable').DataTable({
         dom: "<'row'<'col-sm-6'f><'col-sm-6'l>>" +"<'row'<'col-sm-12 dt-p-left'p>>" +"ti",
@@ -34,7 +37,7 @@ $(document).ready(function() {
                   if (data && data !== 'No Image') {
                       return '<img src="' + data + '" width="60" height="50" style="border-radius:50%;" />';
                   } else {
-                      return '<img src="/static/imgs/rt.jpg" width="60" height="50" style="border-radius:50%;"/>';
+                      return '<img src="' + DEFAULT_IMG_URL + '" width="60" height="50" style="border-radius:50%;"/>';
                   }
               } },  
             { "data": 0 },  
@@ -96,6 +99,27 @@ $(document).ready(function() {
         ]
     });
 
+});
+$('#studentsTable').on('change', '.files', function () {
+    var file = this.files[0];
+    if (!file) return;
+
+    // Check file size (max 2.2 MB)
+    if (file.size > 2200000) {
+        alert("File is too big! Maximum size is 2.2 MB.");
+        this.value = "";
+        return;
+    }
+
+    // Check allowed extensions
+    var allowedExtensions = ['jpg', 'jpeg', 'png'];
+    var fileExtension = file.name.split('.').pop().toLowerCase();
+
+    if (!allowedExtensions.includes(fileExtension)) {
+        alert("Invalid file type. Only JPG, JPEG, and PNG are allowed.");
+        this.value = "";
+        return;
+    }
 });
 
 $(document).on('click', '.open', function() {

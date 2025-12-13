@@ -1,25 +1,15 @@
 from flask import Flask,Blueprint, flash, g, redirect, url_for, render_template, request, session, jsonify
 import psycopg2, psycopg2.extras
 import os
+import config
 from supabase import create_client
 from werkzeug.utils import secure_filename
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
-SUPABASE_BUCKET = os.getenv("SUPABASE_BUCKET", "uploads")
 
-supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
-def get_db_connection():
-    conn = psycopg2.connect(
-        dbname=os.getenv("DB_NAME"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        host=os.getenv("DB_HOST"),
-        port=os.getenv("DB_PORT")
-)
-    return conn
+
+
 def base_students():
      msg2 = request.args.get('msg2', '')
-     conn = get_db_connection()
+     conn = config.get_db_connection()
      cur = conn.cursor()
      cur.execute("SELECT DISTINCT Program_ID FROM Programs")
      prog = cur.fetchall()
@@ -29,7 +19,7 @@ def base_students():
  
 
 def get_students(start, length, search_value, order_column, order_dir):
-    conn = get_db_connection()
+    conn = config.get_db_connection()
     
     cur = conn.cursor()
 
@@ -72,7 +62,7 @@ def get_students(start, length, search_value, order_column, order_dir):
     return data, records_total, records_filtered
 
 def creates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_file):
- conn = get_db_connection()
+ conn = config.get_db_connection()
 
  cur = conn.cursor()
  try:
@@ -106,12 +96,12 @@ def creates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_fil
         
         try:
             print(f"Uploading cover photo '{unique_filename}' to Supabase...")
-            supabase.storage.from_(SUPABASE_BUCKET).upload(
+            config.supabase.storage.from_(config.SUPABASE_BUCKET).upload(
                 unique_filename,
                 file_data,
                 file_options={"content-type": content_type, "upsert": "true"}
             )
-            prof_photo_url = supabase.storage.from_(SUPABASE_BUCKET).get_public_url(unique_filename)
+            prof_photo_url = config.supabase.storage.from_(config.SUPABASE_BUCKET).get_public_url(unique_filename)
             print(f"Uploaded cover photo URL: {prof_photo_url}")
           
             query = '''UPDATE Students SET student_image = %s WHERE s_id = %s '''
@@ -136,7 +126,7 @@ def creates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_fil
     conn.close()
     
 def updates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_file):
-    conn =  conn = get_db_connection()
+    conn =  conn = config.get_db_connection()
 
     cur = conn.cursor()
     
@@ -163,12 +153,12 @@ def updates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_fil
         
         try:
             print(f"Uploading cover photo '{unique_filename}' to Supabase...")
-            supabase.storage.from_(SUPABASE_BUCKET).upload(
+            config.supabase.storage.from_(config.SUPABASE_BUCKET).upload(
                 unique_filename,
                 file_data,
                 file_options={"content-type": content_type, "upsert": "true"}
             )
-            prof_photo_url = supabase.storage.from_(SUPABASE_BUCKET).get_public_url(unique_filename)
+            prof_photo_url = config.supabase.storage.from_(config.SUPABASE_BUCKET).get_public_url(unique_filename)
             print(f"Uploaded cover photo URL: {prof_photo_url}")
           
             query = '''UPDATE Students SET student_image = %s WHERE s_id = %s '''
@@ -187,7 +177,7 @@ def updates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_fil
     conn.close()
    
 def deletes(s_id):
-    conn =  conn = get_db_connection()
+    conn =  conn = config.get_db_connection()
     cur = conn.cursor()
 
 

@@ -3,8 +3,8 @@ from flask_login import LoginManager
 from werkzeug.security import generate_password_hash, check_password_hash
 import psycopg2
 import os
-from models.loginmodel import registerquery, loginquery
-loginpath = Blueprint('loginpath', __name__, template_folder="templates")
+from app.models.loginmodel import registerquery, loginquery
+loginpath = Blueprint('loginpath', __name__, template_folder="../templates")
 @loginpath.route('/logout')
 def logout():
     session.pop('loggedin', None)

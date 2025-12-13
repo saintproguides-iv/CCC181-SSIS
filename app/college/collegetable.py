@@ -1,7 +1,7 @@
 from flask import Flask,Blueprint, flash, g, redirect, url_for, render_template, request, session, jsonify
 import psycopg2, psycopg2.extras
-from models.cmodel import get_colleges, ccreate, cupdate,cdelete
-college_bp = Blueprint('college_bp', __name__, template_folder="templates")
+from app.models.cmodel import get_colleges, ccreate, cupdate,cdelete
+college_bp = Blueprint('college_bp', __name__, template_folder="../templates")
 
 @college_bp.route('/College')
 def Home():

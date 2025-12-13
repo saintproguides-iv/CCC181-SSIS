@@ -1,8 +1,8 @@
 from flask import Flask,Blueprint, flash, g, redirect, url_for, render_template, request, session, jsonify
 import psycopg2
-from models.pmodel import programs_base,get_programs, pcreate, pupdate, pdelete
+from app.models.pmodel import programs_base,get_programs, pcreate, pupdate, pdelete
 import os
-program_bp = Blueprint('program_bp', __name__, template_folder="templates")
+program_bp = Blueprint('program_bp', __name__, template_folder="../templates")
 def get_db_connection():
     conn = psycopg2.connect(
         dbname=os.getenv("DB_NAME"),

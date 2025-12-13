@@ -1,19 +1,12 @@
 from flask import Flask,Blueprint, flash, g, redirect, url_for, render_template, request, session, jsonify
 import psycopg2, psycopg2.extras
 import os
+import config
 from supabase import create_client
 from werkzeug.utils import secure_filename
-def get_db_connection():
-    conn = psycopg2.connect(
-        dbname=os.getenv("DB_NAME"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        host=os.getenv("DB_HOST"),
-        port=os.getenv("DB_PORT")
-)
-    return conn
+
 def programs_base():
-    conn = get_db_connection()
+    conn = config.get_db_connection()
     cur = conn.cursor()
     msg2 = request.args.get('msg2', '')
               
@@ -25,7 +18,7 @@ def programs_base():
     conn.close()
     return clg, msg2
 def get_programs(start, length, search_value, order_column, order_dir):
-    conn = get_db_connection()
+    conn = config.get_db_connection()
     
     cur = conn.cursor()
 
@@ -61,7 +54,7 @@ def get_programs(start, length, search_value, order_column, order_dir):
     return data, records_total, records_filtered
 
 def pcreate(program_id, program_name, college_in):
-    conn = get_db_connection()
+    conn = config.get_db_connection()
 
     cur = conn.cursor()
     msg2 = ''
@@ -76,7 +69,7 @@ def pcreate(program_id, program_name, college_in):
         
     return msg2
 def pupdate(program_id, program_name, college_in):
-    conn = get_db_connection()
+    conn = config.get_db_connection()
     
     cur = conn.cursor()
     cur.execute(
@@ -89,7 +82,7 @@ def pupdate(program_id, program_name, college_in):
     conn.close()
     return redirect(url_for('program_bp.Home') )
 def pdelete(program_id):
-    conn = get_db_connection()
+    conn = config.get_db_connection()
     cur = conn.cursor()
     cur.execute('''DELETE FROM programs WHERE program_id=%s''', (program_id,))
 

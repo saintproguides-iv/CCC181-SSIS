@@ -51,3 +51,4 @@ Thumbs.db
 .flaskenv
 .vscode
 application/__pycache__
+Pipfile

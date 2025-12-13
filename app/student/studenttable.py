@@ -2,11 +2,11 @@ from flask import Flask,Blueprint, flash, g, redirect, url_for, render_template,
 import psycopg2, psycopg2.extras
 from dotenv import load_dotenv
 import os
-from models.smodel import get_students, base_students, creates, updates, deletes
+from app.models.smodel import get_students, base_students, creates, updates, deletes
 from werkzeug.utils import secure_filename
 from supabase import create_client
 
-student_bp = Blueprint('student_bp', __name__, template_folder="templates")
+student_bp = Blueprint('student_bp', __name__, template_folder="../templates")
 def get_db_connection():
     conn = psycopg2.connect(
         dbname=os.getenv("DB_NAME"),

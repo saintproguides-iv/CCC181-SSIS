@@ -3,22 +3,12 @@ import psycopg2, psycopg2.extras
 import os
 from supabase import create_client
 from werkzeug.utils import secure_filename
-
-
-def get_db_connection():
-    conn = psycopg2.connect(
-        dbname=os.getenv("DB_NAME"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        host=os.getenv("DB_HOST"),
-        port=os.getenv("DB_PORT")
-)
-    return conn
+import config
 
 
 def registerquery(user_id, username, actual_pass):
  try:
-    conn = get_db_connection()
+    conn = config.get_db_connection()
     cur = conn.cursor()
 
     cur.execute("SELECT user_id FROM users WHERE user_id = %s", (user_id,))
@@ -43,7 +33,7 @@ def registerquery(user_id, username, actual_pass):
 
 
 def loginquery(user_id, username,):
-    conn = get_db_connection()
+    conn = config.get_db_connection()
     cur = conn.cursor()
     account = None
     hps = None
