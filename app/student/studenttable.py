@@ -71,7 +71,7 @@ def create():
     Last_Name = request.form['Last_Name']
     Program_ID = request.form['Program_ID']
     Gender = request.form['Gender']
-    Year_Level = request.form['Year Level']
+    Year_Level = request.form['Year_Level']
     profpic_file = request.files.get("profilePictureUpload")
     msg2 = creates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_file)
     return redirect(url_for('student_bp.Home', msg2=msg2)) 
@@ -84,8 +84,8 @@ def update():
     Last_Name = request.form['Last_Name']
     Program_ID = request.form['Program_ID']
     Gender = request.form['Gender']
-    Year_Level = request.form['Year Level']
-    profpic_file = request.files.get("profilePictureUpload")
+    Year_Level = request.form['Year_Level']
+    profpic_file = request.files.get("profilePictureEdit")
     msg2 = updates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_file)
     return redirect(url_for('student_bp.Home',msg2=msg2))
 

@@ -3,40 +3,132 @@
 Students
 {% endblock %}
 {% block content %}
-<div>
-  <div>{{ msg2 }}</div>
-  <h2>Add Student</h2>
-    <form action="/s_create" method="post" enctype="multipart/form-data">
-      Input Image(2mb): <input type="file" id="profilePictureUpload" name="profilePictureUpload" accept=".jpg, .jpeg, .png"  ></input>
-      <input type="text" name="s_id" placeholder="ID: XXXX-XXXX" required>
-      <input type="text" name="First_Name" placeholder="First Name" required>
-      <input type="text" name="Last_Name" placeholder="Last Name" required>
-      <select name="Program_ID" placeholder="Program_ID">
-      {% for m in prog %}
-      <option value = {{ m[0] }}>{{ m[0] }}</option>
-      {% endfor %}
-      </select>
-      <select name="Gender" placeholder="Gender">
-      <option value = "Female">Female</option>
-      <option value = "Male">Male</option>
-      </select>
-      <select name="Year Level" placeholder="Year Level">
-      <option value = "1">1</option>
-      <option value = "2">2</option>
-      <option value = "3">3</option>
-      <option value = "4">4</option>
-      <option value = "5+">5+</option>
-      </select>
-      <input type="submit" value="Create" value="Update" onclick="return confirm('Are you sure you want to create this user?')">
+
+{% if msg2 %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert" style="width:95%; margin:0 auto; margin-top:10px;">
+  {{ msg2 }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+<div class="mt-3 mb-2" style="width:95%; margin:0 auto;">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+    Add Student
+  </button>
+</div>
+<div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+         <div class="modal-header" style="background-color:#0d6efd;">
+        <h5 class="modal-title text-white"
+            >
+          Add Student
+        </h5>
+        <button type="button" class="btn-close btn-close-white"
+                data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+
+        
+        
+
+        <form action="/s_create" method="post" enctype="multipart/form-data" id="addStudentForm">
+          
+          <div class="mb-3">
+            <label for="profilePictureUpload" class="form-label">Input Image (2MB max)
+            <input type="file"  id="profilePictureUpload" name="profilePictureUpload" accept=".jpg,.jpeg,.png"  class="d-none">
+            <div class="upload-box">
+            <img src="{{ url_for('static', filename='imgs/rt.jpg') }}"
+            style = "width:100px;height:100px;border-radius:50%;"
+            class="upload-icon">
+
+            <img id="preview_profile" class="preview-img" style="display:none;width:100px;height:100px;border-radius:50%;">
+           </div>
+           </label>
+          </div>
+          
+          <div class="mb-3">
+            <input type="text" class="form-control" name="s_id" placeholder="ID: XXXX-XXXX" pattern="[0-9]{4}-[0-9]{4}" required>
+          </div>
+          
+          <div class="mb-3">
+            <input type="text" class="form-control" name="First_Name" placeholder="First Name" required>
+          </div>
+          
+          <div class="mb-3">
+            <input type="text" class="form-control" name="Last_Name" placeholder="Last Name" required>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Program</label>
+            <select class="form-select" name="Program_ID" required>
+              {% for m in prog %}
+                <option value="{{ m[0] }}">{{ m[0] }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Gender</label>
+            <select class="form-select" name="Gender" required>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+            </select>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Year Level</label>
+            <select class="form-select" name="Year_Level" required>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5+">5+</option>
+            </select>
+          </div>
+          
+        </form>
+      </div>
       
-    </form>
+       <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 
-
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmSubmitModal">
+          Create
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-labelledby="confirmSubmitLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmSubmitLabel">Confirm Submission</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        Are you sure you want to create this student?
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      
+        <button type="submit" class="btn btn-primary" form="addStudentForm" >Yes, Create</button>
+      </div>
+      
+    </div>
+  </div>
 </div>
 
 <div  class="mt-3">
+
+
 <table id="studentsTable" class="table table-striped" style  = "margin: 0 auto;width: 95%;">
 <thead>
+  
 <tr>
   <th>Picture</th>
   <th>ID</th>
@@ -59,14 +151,22 @@ Students
  
 
 var uploadField = document.getElementById("profilePictureUpload");
+var coverPreview = document.getElementById("preview_profile");
+var coverIcon = document.querySelector("#addStudentModal .upload-icon");
+var idCheck = document.getElementById("s_id");
+
+
+
 
 uploadField.onchange = function() {
     var file = this.files[0];
     if (!file) return; 
 
-    // Check file size (max 2.2 MB)
+    
+    
+
     if (file.size > 2200000) {
-        alert("File is too big! Maximum size is 2.2 MB.");
+        alert("File is too big! Maximum size is 2 MB.");
         this.value = "";
         return;
     }
@@ -80,12 +180,68 @@ uploadField.onchange = function() {
         this.value = "";
         return;
     }
+    coverPreview.src = URL.createObjectURL(file);
+    coverPreview.style.display = "block";
+    coverIcon.style.display = "none";
 };
+var confirmModal = document.getElementById('confirmDeleteModal');
+confirmModal.addEventListener('show.bs.modal', function (event) {
+  var button = event.relatedTarget; 
+  var studentId = button.getAttribute('data-id');
 
-  
+  var input = document.getElementById('deleteStudentId');
+  input.value = studentId;
+});
+
+$(document).on("click", ".edit-btn", function() {
+    const button = this; 
+    const modal = $("#editStudentModal");
+
+    $("#edit_s_id").val(button.dataset.id);
+    $("#edit_first_name").val(button.dataset.firstName);
+    $("#edit_last_name").val(button.dataset.lastName);
+    $("#edit_gender").val(button.dataset.gender);
+    $("#edit_program").val(button.dataset.program);
+    $("#edit_year").val(button.dataset.yearlvl);
+
+    const previewImg = modal.find(".upload-icon")[0];
+   if (button.dataset.pic && button.dataset.pic !== "" && button.dataset.pic !== "No Image") {
+    previewImg.src = button.dataset.pic; 
+   } else {
+    previewImg.src = "{{ url_for('static', filename='imgs/rt.jpg') }}"; 
+   }
+    previewImg.style.display = "block";
 
 
+    $("#preview_edit_profile").hide();
 
+    modal.modal("show");
+});
+$("#editStudentModal").on("change", function (e) {
+  if (e.target.id !== "profilePictureEdit") return;
+
+  const file = e.target.files[0];
+  if (!file) return;
+
+  if (file.size > 2 * 1024 * 1024) {
+    alert("File too large (max 2MB)");
+    e.target.value = "";
+    return;
+  }
+
+  if (!["image/jpeg", "image/png"].includes(file.type)) {
+    alert("Only JPG, JPEG and PNG allowed");
+    e.target.value = "";
+    return;
+  }
+
+  const preview = document.getElementById("preview_edit_profile");
+  const icon = document.querySelector("#editStudentModal .upload-icon");
+
+  preview.src = URL.createObjectURL(file);
+  preview.style.display = "block";
+  icon.style.display = "none";
+});
 </script>
 
 

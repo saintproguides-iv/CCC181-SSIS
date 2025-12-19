@@ -36,7 +36,7 @@ def get_students(start, length, search_value, order_column, order_dir):
     params = []
 
     if search_value:
-        base_query += " WHERE First_Name ILIKE %s OR Last_Name ILIKE %s OR (First_Name || ' ' || Last_Name) ILIKE %s OR Students.Program_ID ILIKE %s OR s_id ILIKE %s"
+        base_query += " WHERE (First_Name ILIKE %s OR Last_Name ILIKE %s OR (First_Name || ' ' || Last_Name) ILIKE %s OR Students.Program_ID ILIKE %s OR s_id ILIKE %s)"
         params.extend([f"%{search_value}%", f"%{search_value}%", f"%{search_value}%",f"%{search_value}%",f"%{search_value}%"])
 
     base_query += f" ORDER BY {order_column} {order_dir.upper()} LIMIT %s OFFSET %s"

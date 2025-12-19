@@ -45,17 +45,17 @@ def ccreate(college_id, college_name):
         return msg2
      
     except psycopg2.Error as e:
-        print(f"DATABASE ERROR: {e}")  
+        print(f"ID is already taken, choose another")  
         if conn:  
             conn.rollback()
-        msg2 = f'Error! {e}'  
+        msg2 = f'ID is already taken, choose another'  
         return msg2
     
     except Exception as e:
-        print(f"GENERAL ERROR: {e}")  # CATCH OTHER ERRORS
+        print(f"GENERAL ERROR: {e}")  
         if conn:
             conn.rollback()
-        msg2 = f'Error! {e}'
+        msg2 = f'ID is already taken, choose another'
         return  msg2
     
     finally:

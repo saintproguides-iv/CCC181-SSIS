@@ -38,7 +38,7 @@ def programs_data():
     search_value = request.args.get('search[value]', type=str)
 
     order_column_index = request.args.get('order[0][column]', type=int)
-    order_dir = request.args.get('order[0][dir]', type=str, default='asc')
+    order_dir = request.args.get('order[0][dir]', type=str, default='desc')
 
     columns = [
         "program_id",
