@@ -148,7 +148,7 @@ def updates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_fil
             return msg2 
         
         content_type = f"image/{ext_without_dot}"
-        unique_filename = f"cover_{s_id}_{filename}"
+        unique_filename = f"{s_id}_{filename}"
         file_data = profpic_file.read()
         
         try:

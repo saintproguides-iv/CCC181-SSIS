@@ -3,7 +3,12 @@
 Students
 {% endblock %}
 {% block content %}
+<style>
+  #alertModal {
+  z-index: 2000 !important;
+}
 
+</style>
 {% if msg2 %}
 <div class="alert alert-warning alert-dismissible fade show" role="alert" style="width:95%; margin:0 auto; margin-top:10px;">
   {{ msg2 }}
@@ -14,6 +19,24 @@ Students
   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudentModal">
     Add Student
   </button>
+</div>
+<div class="modal fade"  id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" >
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="alertModalLabel">Invalid File</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="alertModalBody">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -166,7 +189,7 @@ uploadField.onchange = function() {
     
 
     if (file.size > 2200000) {
-        alert("File is too big! Maximum size is 2 MB.");
+        showAlertModal("File too large (max 2MB)");
         this.value = "";
         return;
     }
@@ -176,7 +199,7 @@ uploadField.onchange = function() {
     var fileExtension = file.name.split('.').pop().toLowerCase();
 
     if (!allowedExtensions.includes(fileExtension)) {
-        alert("Invalid file type. Only JPG, JPEG, and PNG are allowed.");
+        showAlertModal("File too large (max 2MB)");
         this.value = "";
         return;
     }
@@ -192,7 +215,11 @@ confirmModal.addEventListener('show.bs.modal', function (event) {
   var input = document.getElementById('deleteStudentId');
   input.value = studentId;
 });
-
+function showAlertModal(message) {
+  document.getElementById("alertModalBody").textContent = message;
+  const modal = new bootstrap.Modal(document.getElementById("alertModal"));
+  modal.show();
+}
 $(document).on("click", ".edit-btn", function() {
     const button = this; 
     const modal = $("#editStudentModal");
@@ -224,13 +251,13 @@ $("#editStudentModal").on("change", function (e) {
   if (!file) return;
 
   if (file.size > 2 * 1024 * 1024) {
-    alert("File too large (max 2MB)");
+    showAlertModal("File too large (max 2MB)");
     e.target.value = "";
     return;
   }
 
   if (!["image/jpeg", "image/png"].includes(file.type)) {
-    alert("Only JPG, JPEG and PNG allowed");
+    showAlertModal("Only JPG, JPEG and PNG allowed");
     e.target.value = "";
     return;
   }

@@ -102,7 +102,9 @@ Colleges
 <script>
  $(document).ready(function() {
     $('#collegeTable').DataTable({
-      dom: "<'row'<'col-sm-6'f><'col-sm-6'l>>" +"<'row'<'col-sm-12 dt-p-left'p>>" +"ti",
+            dom: "<'row'<'col-sm-6'f><'col-sm-6'l>>" + 
+     "<'row'<'col-sm-12'tr>>" +        
+     "<'row mt-2'<'col-sm-6'i><'col-sm-6'p>>",
       "pageLength": 10,
       "ordering": true,
       "searching": true,
