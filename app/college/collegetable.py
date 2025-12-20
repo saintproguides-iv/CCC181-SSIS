@@ -33,8 +33,8 @@ def create():
 def update():
     college_id = request.form['college_id']
     college_name = request.form['college_name']
-    cupdate(college_name, college_id)
-    return redirect(url_for('college_bp.Home')) 
+    msg2 = cupdate(college_name, college_id)
+    return redirect(url_for('college_bp.Home', msg2 = msg2)) 
 
 
 @college_bp.route('/c_delete', methods=['POST'])
@@ -46,5 +46,5 @@ def delete():
     college_id = request.form['college_id']
 
     
-    cdelete(college_id)
-    return redirect(url_for('college_bp.Home')) 
+    msg2 = cdelete(college_id)
+    return redirect(url_for('college_bp.Home', msg2 = msg2)) 

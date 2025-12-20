@@ -32,8 +32,12 @@ def Home():
         return render_template("Student.html", prog=prog, msg2=msg2)
        
 
-@student_bp.route('/students_data')
+@student_bp.route('/students_data', methods=['GET'])
 def students_data():
+    program = request.args.get('program', '')
+    gender = request.args.get('gender', '')
+    yearlvl = request.args.get('yearlvl', '')
+
     draw = request.args.get('draw', type=int, default=1)
     start = request.args.get('start', type=int, default=0)
     length = request.args.get('length', type=int, default=10)
@@ -54,13 +58,15 @@ def students_data():
     ]
     order_column = columns[order_column_index] if order_column_index is not None else "s_id"
 
-    data, records_total, records_filtered = get_students(start, length, search_value, order_column, order_dir)
+    data, records_total, records_filtered = get_students(
+        start, length, search_value, order_column, order_dir, program, gender, yearlvl
+    )
 
     return jsonify({
-        'draw': draw,
-        'recordsTotal': records_total,
-        'recordsFiltered': records_filtered,
-        'data': data
+        "draw": draw,
+        "recordsTotal": records_total,
+        "recordsFiltered": records_filtered,
+        "data": data
     })
 @student_bp.route('/s_create', methods=['POST'])
 def create():
@@ -93,5 +99,5 @@ def update():
 @student_bp.route('/s_delete', methods=['POST'])
 def delete():
     s_id = request.form['s_id']
-    deletes(s_id)
-    return redirect(url_for('student_bp.Home',))
+    msg2 = deletes(s_id)
+    return redirect(url_for('student_bp.Home', msg2=msg2))

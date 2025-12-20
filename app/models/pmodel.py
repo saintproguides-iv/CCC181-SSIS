@@ -60,12 +60,13 @@ def pcreate(program_id, program_name, college_in):
     msg2 = ''
     if not program_id or not program_name or not college_in:
           msg2 = "Required fields missing"
+          return msg2
     else:
             cur.execute(
             '''INSERT INTO programs (program_id, program_name, college_in) VALUES (%s, %s, %s)''',
             (program_id, program_name, college_in))
     conn.commit()
-    print("Insert successful!")
+    msg2 = f'Program {program_id} succesfully inserted'
         
     return msg2
 def pupdate(program_id, program_name, college_in):
@@ -76,20 +77,22 @@ def pupdate(program_id, program_name, college_in):
         '''UPDATE programs SET program_name=%s, \
          college_in=%s WHERE program_id=%s ''', (program_name, college_in, program_id ))
  
-
+    msg2 = f'Program {program_id} succesfully updated'
     conn.commit()
     cur.close()
     conn.close()
-    return redirect(url_for('program_bp.Home') )
+    return msg2
+    
 def pdelete(program_id):
     conn = config.get_db_connection()
     cur = conn.cursor()
     cur.execute('''DELETE FROM programs WHERE program_id=%s''', (program_id,))
 
-   
+    msg2 = f'Program {program_id} succesfully deleted'
     conn.commit()
 
    
     cur.close()
     conn.close()
+    return msg2
     

@@ -15,46 +15,65 @@ def base_students():
      prog = cur.fetchall()
      cur.close()
      conn.close()
+   
      return prog, msg2
  
 
-def get_students(start, length, search_value, order_column, order_dir):
+def get_students(start, length, search_value, order_column, order_dir, program,gender,yearlvl):
     conn = config.get_db_connection()
-    
     cur = conn.cursor()
 
     base_query = '''
+        FROM Students
+        LEFT JOIN Programs ON Students.Program_ID = Programs.Program_ID
+        WHERE 1=1
+    '''
+    params = []
+
+    if program and program != '':
+        base_query += " AND Students.Program_ID = %s"
+        params.append(program)
+    if gender and gender != '':
+        base_query += " AND Students.gender = %s"
+        params.append(gender)
+    if yearlvl and yearlvl != '':
+        base_query += " AND Students.year_level = %s"
+        params.append(yearlvl)
+
+    if search_value:
+        base_query += '''
+            AND (
+                First_Name ILIKE %s OR
+                Last_Name ILIKE %s OR
+                (First_Name || ' ' || Last_Name) ILIKE %s OR
+                Students.Program_ID ILIKE %s OR
+                s_id ILIKE %s
+            )
+        '''
+        params.extend([f"%{search_value}%"] * 5)
+
+
+    data_query = f'''
         SELECT s_id, First_Name, Last_Name,
                COALESCE(Students.Program_ID, 'No Program'),
                COALESCE(Programs.Program_Name, 'No Program'),
                COALESCE(Students.student_image, 'No Image'),
                COALESCE(Students.year_level, 'No Year Level'),
                COALESCE(Students.gender, 'No Gender')
-        FROM Students
-        LEFT JOIN Programs ON Students.Program_ID = Programs.Program_ID
+        {base_query}
+        ORDER BY {order_column} {order_dir.upper()}
+        LIMIT %s OFFSET %s
     '''
-    params = []
-
-    if search_value:
-        base_query += " WHERE (First_Name ILIKE %s OR Last_Name ILIKE %s OR (First_Name || ' ' || Last_Name) ILIKE %s OR Students.Program_ID ILIKE %s OR s_id ILIKE %s)"
-        params.extend([f"%{search_value}%", f"%{search_value}%", f"%{search_value}%",f"%{search_value}%",f"%{search_value}%"])
-
-    base_query += f" ORDER BY {order_column} {order_dir.upper()} LIMIT %s OFFSET %s"
-    params.extend([length, start])
-
-    cur.execute(base_query, tuple(params))
+    cur.execute(data_query, params + [length, start])
     data = cur.fetchall()
 
-  
+
     cur.execute("SELECT COUNT(*) FROM Students")
     records_total = cur.fetchone()[0]
 
-    if search_value:
-        cur.execute("SELECT COUNT(*) FROM Students WHERE First_Name ILIKE %s OR Last_Name ILIKE %s OR (First_Name || ' ' || Last_Name) ILIKE %s OR  Students.Program_ID ILIKE %s OR s_id ILIKE %s",
-                    (f"%{search_value}%", f"%{search_value}%", f"%{search_value}%", f"%{search_value}%",f"%{search_value}%"))
-        records_filtered = cur.fetchone()[0]
-    else:
-        records_filtered = records_total
+ 
+    cur.execute(f"SELECT COUNT(*) {base_query}", params)
+    records_filtered = cur.fetchone()[0]
 
     cur.close()
     conn.close()
@@ -75,7 +94,11 @@ def creates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_fil
         '''INSERT INTO Students \
         (s_id, First_Name, Last_Name, Program_ID, Gender, year_level) VALUES (%s, %s, %s, %s,%s,%s)''',
         (s_id, First_Name, Last_Name, Program_ID, Gender, Year_Level))
+    
+     
+
     conn.commit()
+
     
     if profpic_file and profpic_file.filename:
         filename = secure_filename(profpic_file.filename)
@@ -115,11 +138,11 @@ def creates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_fil
             flash("Failed to upload cover photo.")
 
     
-
+    msg2 = f'Student {s_id} succesfully inserted'
     return msg2
  except psycopg2.Error as e:
                conn.rollback()
-               msg2 = f'ID is invalid, did not insert student'
+               msg2 = f'ID already exists in list, did not insert student'
                return  msg2
  finally:
     cur.close()
@@ -171,12 +194,14 @@ def updates(s_id, First_Name, Last_Name,Program_ID,Gender,Year_Level,profpic_fil
             flash("Failed to upload cover photo.")
 
  
-
+    msg2 = f'Student {s_id} succesfully updated'
     conn.commit()
     cur.close()
     conn.close()
+    return msg2
    
 def deletes(s_id):
+    
     conn =  conn = config.get_db_connection()
     cur = conn.cursor()
 
@@ -185,10 +210,10 @@ def deletes(s_id):
 
     cur.execute('''DELETE FROM Students WHERE s_id=%s''', (s_id,))
 
-   
+    msg2 = f'Student {s_id} succesfully deleted'
     conn.commit()
 
    
     cur.close()
     conn.close()
-   
+    return msg2

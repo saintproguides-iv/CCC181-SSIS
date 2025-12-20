@@ -15,6 +15,13 @@ Students
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 {% endif %}
+
+
+
+
+
+
+
 <div class="mt-3 mb-2" style="width:95%; margin:0 auto;">
   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudentModal">
     Add Student
@@ -121,6 +128,36 @@ Students
       </div>
       
     </div>
+  </div>
+</div>
+
+<div class="row g-2 mb-3" style="margin-left: 35px;">
+  <div class="col-md-1 col-sm-12">
+    <select id="programFilter" class="form-select">
+      <option value="">All Programs</option>
+      {% for row in prog %}
+        <option value="{{ row[0] }}">{{ row[0] }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="col-md-1 col-sm-6">
+    <select id="genderFilter" name="Gender" class="form-select">
+      <option value="">All Genders</option>
+      <option value="Female">Female</option>
+      <option value="Male">Male</option>
+    </select>
+  </div>
+
+  <div class="col-md-1 col-sm-6">
+    <select id="yearFilter" name="Year_Level" class="form-select">
+      <option value="">All Years</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5+">5+</option>
+    </select>
   </div>
 </div>
 <div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-labelledby="confirmSubmitLabel" aria-hidden="true">
@@ -269,6 +306,8 @@ $("#editStudentModal").on("change", function (e) {
   preview.style.display = "block";
   icon.style.display = "none";
 });
+
+
 </script>
 
 

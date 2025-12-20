@@ -31,7 +31,7 @@ def Home():
      
 @program_bp.route('/programs_data')
 def programs_data():
-
+    program = request.args.get('program', 'All Programs')
     draw = request.args.get('draw', type=int, default=1)
     start = request.args.get('start', type=int, default=0)
     length = request.args.get('length', type=int, default=10)
@@ -71,10 +71,10 @@ def create():
         
      
     except psycopg2.Error as e:
-        print(f"ID is Invalid")  
+        print(f"Program ID already exists")  
         if conn:  
             conn.rollback()
-        msg2 = f"ID is Invalid" 
+        msg2 = f"Program ID already exists" 
         return redirect(url_for('program_bp.Home', msg2=msg2)) 
     
     except Exception as e:
@@ -100,8 +100,8 @@ def update():
     program_id = request.form['program_id']
     program_name = request.form['program_name']
     college_in = request.form['college_in']
-    pupdate(program_id, program_name, college_in)
-    return redirect(url_for('program_bp.Home'))
+    msg2 = pupdate(program_id, program_name, college_in)
+    return redirect(url_for('program_bp.Home', msg2=msg2))
 
 
 @program_bp.route('/p_delete', methods=['POST'])

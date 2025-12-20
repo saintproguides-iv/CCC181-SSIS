@@ -41,7 +41,7 @@ def ccreate(college_id, college_name):
             (college_id, college_name))
           conn.commit()
         print("Insert successful!")
-        
+        msg2 = f'College {college_id} succesfully inserted'
         return msg2
      
     except psycopg2.Error as e:
@@ -63,6 +63,8 @@ def ccreate(college_id, college_name):
             cur.close()
         if conn:  # CHECK IF conn EXISTS BEFORE CLOSING
             conn.close()
+    
+    
 def cupdate(college_name, college_id):
     conn = config.get_db_connection()
     cur = conn.cursor()
@@ -71,7 +73,8 @@ def cupdate(college_name, college_id):
     conn.commit()
     cur.close()
     conn.close()
-   
+    msg2 = f'College {college_id} succesfully updated'
+    return msg2
 
 def cdelete(college_id):
     conn = config.get_db_connection()
@@ -84,4 +87,5 @@ def cdelete(college_id):
    
     cur.close()
     conn.close()
-    
+    msg2 = f'College {college_id} succesfully deleted'
+    return msg2

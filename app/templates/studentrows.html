@@ -155,16 +155,23 @@
 <script>
 const DEFAULT_IMG_URL = "{{ url_for('static', filename='imgs/rt.jpg') }}"
 
-
+let table;
 $(document).ready(function() {
-    $('#studentsTable').DataTable({
+     table = $('#studentsTable').DataTable({
         dom: "<'row'<'col-sm-6'f><'col-sm-6'l>>" + 
      "<'row'<'col-sm-12'tr>>" +        
      "<'row mt-2'<'col-sm-6'i><'col-sm-6'p>>",
          
         "processing": true,
         "serverSide": true,
-        "ajax": "/students_data",
+        "ajax": {
+          url : "/students_data",
+          data :  function (d) {
+            d.program = $('#programFilter').val();
+            d.gender = $('#genderFilter').val();
+            d.yearlvl = $('#yearFilter').val();
+        }
+        },
         "columns": [
             { "data": 5, 
             "orderable": false,
@@ -224,7 +231,15 @@ $(document).ready(function() {
             }
         ]
     });
-
+$('#programFilter').on('change', function () {
+    table.ajax.reload();
+});
+$('#genderFilter').on('change', function () {
+    table.ajax.reload();
+});
+$('#yearFilter').on('change', function () {
+    table.ajax.reload();
+});
 });
 
 
